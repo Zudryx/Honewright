@@ -1,0 +1,53 @@
+name: Bug report
+description: Something in Honewright doesn't work the way it should, or its data is wrong.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Honewright version
+      description: Shown in the addon list and by `/hone help`.
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: input
+    id: character
+    attributes:
+      label: Class, level and faction
+      placeholder: "Warrior, level 24, Alliance"
+    validations:
+      required: true
+  - type: dropdown
+    id: part
+    attributes:
+      label: Which part?
+      options:
+        - The on-screen panel
+        - Weapon tooltips
+        - Under-trained warning
+        - Skill-up alerts
+        - Progress estimate
+        - Weapon list, trainers or map pins
+        - Wrong trainer, cost or class weapon data
+        - The Windows updater
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: error
+    attributes:
+      label: Lua error (if any)
+      description: Type `/console scriptErrors 1` in game to make WoW show errors.
+      render: text
+  - type: textarea
+    id: probe
+    attributes:
+      label: /hone probe output
+      description: Run it once out of combat and once while auto-attacking a mob. Screenshots are fine.

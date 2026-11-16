@@ -1,0 +1,25 @@
+## Interface: 16001
+## Title: Honewright
+## Notes: Your weapon skill at a glance: current vs max, a warning for under-trained weapons, skill-up alerts, and where to learn new weapon types. Built for WoW Forever.
+## Version: 0.1.0
+## IconTexture: Interface\AddOns\Honewright\Media\Icon
+## AddonCompartmentFunc: Honewright_OnAddonCompartmentClick
+## AddonCompartmentFuncOnEnter: Honewright_OnAddonCompartmentEnter
+## AddonCompartmentFuncOnLeave: Honewright_OnAddonCompartmentLeave
+## X-License: GPL-3.0-only
+## SavedVariables: HonewrightDB
+## SavedVariablesPerCharacter: HonewrightCharDB
+
+Core.lua
+Data.lua
+Skills.lua
+Progress.lua
+Alerts.lua
+Display.lua
+Tooltip.lua
+Trainers.lua
+LearnWindow.lua
+Options.lua
+Probe.lua
+WhatsNew.lua
+Commands.lua
