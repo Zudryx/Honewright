@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.1
+
+- **New logo**, in the same style as Zudryx's other addons: a sword inside a green progress ring. It's the icon in the addon list too.
+- Honewright's name in chat and its windows now uses the logo's green.
+- No other changes.
+
 ## 0.1.0
 
 - **First test version.**

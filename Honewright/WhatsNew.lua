@@ -8,6 +8,11 @@
 local ADDON, ns = ...
 
 ns.WHATS_NEW = {
+  { version = "0.1.1", lines = {
+    "- **New logo**, in the same style as Zudryx's other addons: a sword inside a green progress ring. It's the icon in the addon list too.",
+    "- Honewright's name in chat and its windows now uses the logo's green.",
+    "- No other changes.",
+  } },
   { version = "0.1.0", lines = {
     "- **First test version.**",
     "- **On-screen panel:** each equipped weapon type with your skill against max for your level, colored from green (maxed) to red (far behind), plus any bonus from gear. Drag it where you like; click it for the weapon list.",

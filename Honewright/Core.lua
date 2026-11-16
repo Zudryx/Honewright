@@ -8,8 +8,8 @@
 
 local ADDON, ns = ...
 
-ns.VERSION = "0.1.0"
-ns.ACCENT = "e0a84a"   -- the logo's whetstone amber
+ns.VERSION = "0.1.1"
+ns.ACCENT = "4ade80"   -- the logo's green progress ring
 local PREFIX = "|cff" .. ns.ACCENT .. "Honewright|r: "
 
 function ns.Print(...)
