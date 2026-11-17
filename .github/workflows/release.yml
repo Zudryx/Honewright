@@ -29,6 +29,11 @@ on:
 permissions:
   contents: write
 
+# one release run at a time, so a testing push and a main push can't trip over each other
+concurrency:
+  group: release
+  cancel-in-progress: false
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -74,7 +79,7 @@ jobs:
             # docs-only pushes after a release: nothing new to test
             echo "::notice::v$VERSION is already released, so no test build. Bump the version to make the next one."
             for t in $(gh api "repos/$GITHUB_REPOSITORY/releases?per_page=100" -q '.[] | select(.prerelease) | .tag_name' | grep -- "^v$VERSION-test\." || true); do
-              gh release delete "$t" --cleanup-tag -y
+              gh release delete "$t" --cleanup-tag -y || true   # another run may have removed it already
             done
             exit 0
           fi
@@ -85,7 +90,7 @@ jobs:
             cat notes.md; } > test-notes.md
           # keep only the newest test build
           for t in $(gh api "repos/$GITHUB_REPOSITORY/releases?per_page=100" -q '.[] | select(.prerelease) | .tag_name' | grep -- '-test\.' || true); do
-            gh release delete "$t" --cleanup-tag -y
+            gh release delete "$t" --cleanup-tag -y || true   # another run may have removed it already
           done
           gh release create "$TAG" "Honewright-$VERSION.zip" HonewrightUpdater.zip --prerelease --target "$GITHUB_SHA" \
             --title "Honewright $VERSION (test $N)" --notes-file test-notes.md
@@ -105,7 +110,7 @@ jobs:
           echo "created=true" >> "$GITHUB_OUTPUT"
           # this version's test builds have done their job
           for t in $(gh api "repos/$GITHUB_REPOSITORY/releases?per_page=100" -q '.[] | select(.prerelease) | .tag_name' | grep -- "^v$VERSION-test\." || true); do
-            gh release delete "$t" --cleanup-tag -y
+            gh release delete "$t" --cleanup-tag -y || true   # another run may have removed it already
           done
 
       - name: CurseForge
