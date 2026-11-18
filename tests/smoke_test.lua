@@ -167,7 +167,8 @@ local services = {}
 local npcName = "Woo Ping"
 function UnitName(unit) if unit == "npc" then return npcName end return "Tester" end
 function GetNumTrainerServices() return #services end
-function GetTrainerServiceInfo(i) local s = services[i] if s then return s.name, "", s.cat end end
+-- WoW Forever's order: the 3rd value is the icon, the status comes later
+function GetTrainerServiceInfo(i) local s = services[i] if s then return s.name, nil, 132223, s.cat, false end end
 function GetTrainerServiceCost(i) return services[i].cost end
 function GetTrainerServiceLevelReq(i) return services[i].level end
 
@@ -355,6 +356,7 @@ fire("TRAINER_SHOW")
 runTimers()
 local seen = HonewrightDB.trainersSeen["Woo Ping"]
 check(seen and seen.cost.POLEARM == 9500 and seen.level.POLEARM == 20, "polearm cost and level remembered")
+check(seen and seen.status.POLEARM == "unavailable" and seen.status.STAFF == "available", "status found wherever the game puts it")
 check(seen and seen.teaches.STAFF and not seen.teaches.DAGGER, "only what the window listed")
 check(HonewrightDB.mapIDs.Stormwind == 84, "city map remembered at the trainer")
 check(lastChat("Woo Ping can teach you") and lastChat("Polearms %(95s, level 20%)") and lastChat("Staves %(9s 50c%)"),
@@ -413,6 +415,7 @@ check(d and d.version == ns.VERSION, "diagnostics kept for this version")
 check(d.reads.inCombat > 0 and d.reads.hiddenInCombat > 0, "hidden reads in combat counted")
 check(d.chatSkill.readable >= 1 and d.chatSkill.hidden >= 1, "skill-up chat lines counted")
 check(d.skillUps.count.chat == 1 and #d.skillUps.recent >= 2, "skill-ups recorded with their source")
+check(d.trainers.opened >= 1, "opened trainer windows counted")
 check(d.trainers.weaponMasters >= 1 and d.trainers.recent[1].npc == "Woo Ping" and #d.trainers.recent[1].listed == 4, "weapon master window recorded")
 check(#d.probes >= 1 and d.probes[#d.probes].inCombat == true and not d.probes[1].lines[1]:find("|c"), "probe lines saved without colors")
 fire("PLAYER_LOGOUT")

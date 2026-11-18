@@ -8,7 +8,7 @@
 
 local ADDON, ns = ...
 
-ns.VERSION = "0.1.2"
+ns.VERSION = "0.1.3"
 ns.ACCENT = "4ade80"   -- the logo's green progress ring
 local PREFIX = "|cff" .. ns.ACCENT .. "Honewright|r: "
 

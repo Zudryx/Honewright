@@ -94,6 +94,10 @@ end)
 
 ns.Listen("LOADED", function()
   ns.Diag()
+  ns.On("TRAINER_SHOW", function()
+    local d = ns.Diag()
+    if d then d.trainers.opened = d.trainers.opened + 1 end
+  end)
   ns.On("CHAT_MSG_SKILL", function(_, text)
     local d = ns.Diag()
     if not d then return end

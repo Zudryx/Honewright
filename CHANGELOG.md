@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.3
+
+- **Weapon masters tell you what they can teach again.** WoW Forever lists a trainer's skills a little differently from other game versions, so Honewright couldn't tell which ones you can learn and stayed quiet. Now, when you open a weapon master, chat lists what they can teach you that you don't know yet, with the real price (reputation discounts included).
+- The diagnostics now count every trainer window you open, and save everything the game says about each weapon master's skills.
+
 ## 0.1.2
 
 - **Map pins land on the right map from the start.** WoW Forever uses the Classic city maps, so Honewright now tries those first instead of waiting until you've been in the city.

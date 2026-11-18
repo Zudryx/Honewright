@@ -165,6 +165,29 @@ local function NameIndex()
   return index
 end
 
+-- What a trainer line's status is ("available", "unavailable", "used",
+-- "header"). WoW Forever doesn't return it in the same position as other
+-- game versions (the 3rd value there is the icon), so look through all of
+-- the values for one of the status words instead of trusting a position.
+local STATUS = { available = true, unavailable = true, used = true, header = true }
+local function Pack(...) return { n = select("#", ...), ... } end
+
+local function ServiceInfo(i)
+  local v = Pack(GetTrainerServiceInfo(i))
+  local status
+  for j = 2, v.n do
+    local s = ns.Str(v[j])
+    if s and STATUS[s] then status = s break end
+  end
+  -- every value, for the diagnostics
+  local parts = {}
+  for j = 1, math.min(v.n, 8) do
+    parts[#parts + 1] = ns.IsHidden(v[j]) and "HIDDEN" or tostring(v[j])
+  end
+  return v[1], status, table.concat(parts, " | ")
+end
+ns.TrainerServiceInfo = ServiceInfo
+
 -- Returns the trainer record it saved, or nil if this isn't a weapon master.
 function ns.ReadTrainerWindow()
   if not GetNumTrainerServices or not GetTrainerServiceInfo then return nil end
@@ -176,11 +199,9 @@ function ns.ReadTrainerWindow()
   local n = ns.Num(GetNumTrainerServices()) or 0
   local raw = {}   -- what the window listed, for the diagnostics
   for i = 1, n do
-    local name, _, category = GetTrainerServiceInfo(i)
-    if #raw < 40 then
-      raw[#raw + 1] = (ns.IsHidden(name) and "HIDDEN" or tostring(name)) .. " [" .. (ns.IsHidden(category) and "HIDDEN" or tostring(category)) .. "]"
-    end
-    name, category = ns.Str(name), ns.Str(category)
+    local name, category, all = ServiceInfo(i)
+    if #raw < 40 then raw[#raw + 1] = all end
+    name = ns.Str(name)
     if name == nil then break end
     local key = category ~= "header" and index[name]
     if key then
@@ -226,7 +247,8 @@ function ns.ReportTrainer(rec, npc)
   if not rec then return end
   local parts = {}
   for _, key in ipairs(ns.WEAPON_ORDER) do
-    if rec.status[key] == "available" or (rec.status[key] == "unavailable" and ns.ClassCanLearn(ns.PlayerClass(), key)) then
+    local status = rec.status[key]
+    if status == "available" or ((status == "unavailable" or status == nil) and ns.ClassCanLearn(ns.PlayerClass(), key) ~= false) then
       local w = ns.WEAPONS[key]
       if not ns.IsLearned(w) then
         local extra = ns.Money(rec.cost[key])
