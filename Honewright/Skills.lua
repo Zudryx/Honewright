@@ -179,6 +179,7 @@ function ns.RefreshSkills(source)
     end
   end
   ns.pendingRead = hiddenAny
+  if ns.DiagRead then ns.DiagRead(hiddenAny) end
   ns.skillsReady = true
   ns.Fire("SKILLS_UPDATED")
 end

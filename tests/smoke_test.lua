@@ -371,8 +371,8 @@ section("map pins")
 HonewrightDB.mapIDs = {}
 playerMap = 1429
 local id, sure = ns.CityMapID("Stormwind")
-check(id == 84 and not sure, "Stormwind guessed from candidates")
-check(ns.PinTrainer(ns.TRAINERS[4]) and waypoint and waypoint.mapID == 84 and math.abs(waypoint.x - 0.638) < 0.001, "pin placed")
+check(id == 1453 and not sure, "Stormwind guessed from candidates (Classic map first)")
+check(ns.PinTrainer(ns.TRAINERS[4]) and waypoint and waypoint.mapID == 1453 and math.abs(waypoint.x - 0.638) < 0.001, "pin placed")
 playerMap = 1453
 ns.LearnCityMap()
 id, sure = ns.CityMapID("Stormwind")
@@ -406,6 +406,17 @@ Settings = {
 local okSet, errSet = pcall(ns.Options.Register)
 check(okSet, "settings page builds: " .. tostring(errSet))
 check(registered.warnGap == 25 and registered.panel == true, "settings use the defaults")
+
+section("diagnostics")
+local d = HonewrightDB.diag
+check(d and d.version == ns.VERSION, "diagnostics kept for this version")
+check(d.reads.inCombat > 0 and d.reads.hiddenInCombat > 0, "hidden reads in combat counted")
+check(d.chatSkill.readable >= 1 and d.chatSkill.hidden >= 1, "skill-up chat lines counted")
+check(d.skillUps.count.chat == 1 and #d.skillUps.recent >= 2, "skill-ups recorded with their source")
+check(d.trainers.weaponMasters >= 1 and d.trainers.recent[1].npc == "Woo Ping" and #d.trainers.recent[1].listed == 4, "weapon master window recorded")
+check(#d.probes >= 1 and d.probes[#d.probes].inCombat == true and not d.probes[1].lines[1]:find("|c"), "probe lines saved without colors")
+fire("PLAYER_LOGOUT")
+check(d.events.SKILL_LINES_CHANGED and d.events.SKILL_LINES_CHANGED > 0, "event counts saved at logout")
 
 print(("%d passed, %d failed"):format(passes, fails))
 os.exit(fails == 0 and 0 or 1)

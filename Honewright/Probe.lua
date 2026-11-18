@@ -28,7 +28,13 @@ end
 local function YesNo(b) return b and "|cff40ff40yes|r" or "|cffff5555no|r" end
 
 function ns.Probe()
-  local P = ns.Print
+  local lines = {}
+  local function P(...)
+    local parts = {}
+    for i = 1, select("#", ...) do parts[#parts + 1] = tostring((select(i, ...))) end
+    lines[#lines + 1] = table.concat(parts, " ")
+    ns.Print(...)
+  end
   local _, _, _, iface = GetBuildInfo()
   P(("probe, Honewright %s, interface %s, %s"):format(ns.VERSION, Show(iface),
     ns.InCombat() and "IN COMBAT" or "out of combat"))
@@ -97,6 +103,8 @@ function ns.Probe()
   local seen = 0
   for _ in pairs(ns.db.trainersSeen) do seen = seen + 1 end
   P(("  Weapon masters visited: %d"):format(seen))
+  if ns.DiagProbe then ns.DiagProbe(lines) end
+  ns.Print("Saved to SavedVariables\\Honewright.lua too (after you log out or /reload).")
 end
 
 ns.Listen("LOADED", function()

@@ -102,14 +102,15 @@ ns.TRAINERS = {
 
 -- Map IDs to try for each city before Honewright has seen the real one
 -- (it learns the right ID the first time you're in the city). The first ID
--- that exists and has the city's name wins.
+-- that exists and has the city's name wins. WoW Forever uses the Classic city
+-- maps (seen in game: Stormwind 1453, Orgrimmar 1454); the others are a fallback.
 ns.CITY_MAP_CANDIDATES = {
-  ["Stormwind"] = { 84, 1453 },
-  ["Ironforge"] = { 87, 1455 },
-  ["Darnassus"] = { 89, 1457 },
-  ["Orgrimmar"] = { 85, 1454 },
-  ["Thunder Bluff"] = { 88, 1456 },
-  ["Undercity"] = { 90, 1458 },
+  ["Stormwind"] = { 1453, 84 },
+  ["Ironforge"] = { 1455, 87 },
+  ["Darnassus"] = { 1457, 89 },
+  ["Orgrimmar"] = { 1454, 85 },
+  ["Thunder Bluff"] = { 1456, 88 },
+  ["Undercity"] = { 1458, 90 },
 }
 ns.CITY_NAME_MATCH = {   -- how the city's map name starts (English); "Stormwind City" etc.
   ["Stormwind"] = "Stormwind", ["Ironforge"] = "Ironforge", ["Darnassus"] = "Darnassus",

@@ -174,8 +174,12 @@ function ns.ReadTrainerWindow()
   local rec = { teaches = {}, cost = {}, level = {}, status = {} }
   local found = 0
   local n = ns.Num(GetNumTrainerServices()) or 0
+  local raw = {}   -- what the window listed, for the diagnostics
   for i = 1, n do
     local name, _, category = GetTrainerServiceInfo(i)
+    if #raw < 40 then
+      raw[#raw + 1] = (ns.IsHidden(name) and "HIDDEN" or tostring(name)) .. " [" .. (ns.IsHidden(category) and "HIDDEN" or tostring(category)) .. "]"
+    end
     name, category = ns.Str(name), ns.Str(category)
     if name == nil then break end
     local key = category ~= "header" and index[name]
@@ -187,6 +191,7 @@ function ns.ReadTrainerWindow()
       if GetTrainerServiceLevelReq then rec.level[key] = ns.Num(GetTrainerServiceLevelReq(i)) end
     end
   end
+  if ns.DiagTrainer then ns.DiagTrainer(npc, n, found, raw) end
   if found == 0 then return nil end
   -- which city this trainer is in, from Honewright's list (names are the same in every language)
   for _, t in ipairs(ns.TRAINERS) do
